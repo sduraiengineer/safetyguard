@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_qE2vQA3TEfGqCqWVgMp83w" name="SafeGuard">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_qZErwA3TEfGqCqWVgMp83w">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_qUixEA3TEfGqCqWVgMp83w" name="Interaction1">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_qU4IQA3TEfGqCqWVgMp83w" source="org.eclipse.papyrus.sirius.uml.diagram.sequence.end"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="__zE5wA3UEfGqCqWVgMp83w" name="SafeAppDB">
+    <packagedElement xmi:type="uml:Class" xmi:id="_EWryYA3WEfGqCqWVgMp83w" name="AppThread">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_NOdEUA3WEfGqCqWVgMp83w" name="name">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_Xryl4A3WEfGqCqWVgMp83w" name="HeartBeatInterval">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_RjracDNtEfGcIdzaQUGSYQ" name="App"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_aKy0YA3VEfGqCqWVgMp83w" name="SafeMonitor">
+    <packagedElement xmi:type="uml:Class" xmi:id="_pxMEYCt3EfGSdM2BU96YzQ" name="AppMonitor"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_3VGVUCt3EfGSdM2BU96YzQ" name="SystemMonitor"/>
+    <packagedElement xmi:type="uml:Signal" xmi:id="_S9JfQD1nEfGDdYk9bCV1FA" name="heartbeat update"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_e7b44A3VEfGqCqWVgMp83w" name="SafeAction"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_ixouYA3VEfGqCqWVgMp83w" name="SafeInstrument"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_pUvloD1iEfGDdYk9bCV1FA" name="Apps" node="_37PU8D1iEfGDdYk9bCV1FA _8W5A4D1iEfGDdYk9bCV1FA _wng9wD1kEfGDdYk9bCV1FA _8KNk4D1kEfGDdYk9bCV1FA _4ALwQD1rEfGydckbO_DmyA _nrEf0D1nEfGDdYk9bCV1FA" group="_4ALwQD1rEfGydckbO_DmyA">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_bpx1AD1jEfGDdYk9bCV1FA">
+      <body>Enable security measures</body>
+    </ownedComment>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_zQKToD1nEfGDdYk9bCV1FA" target="_8W5A4D1iEfGDdYk9bCV1FA" source="_37PU8D1iEfGDdYk9bCV1FA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_5pChQD1nEfGDdYk9bCV1FA" target="_wng9wD1kEfGDdYk9bCV1FA" source="_8W5A4D1iEfGDdYk9bCV1FA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_SeVfgD1rEfGydckbO_DmyA" target="_8KNk4D1kEfGDdYk9bCV1FA" source="_wng9wD1kEfGDdYk9bCV1FA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_JgDgcD1sEfGydckbO_DmyA" target="_4ALwQD1rEfGydckbO_DmyA" source="_8KNk4D1kEfGDdYk9bCV1FA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_NJSQ8D1sEfGydckbO_DmyA" target="_nrEf0D1nEfGDdYk9bCV1FA" source="_4ALwQD1rEfGydckbO_DmyA"/>
+    <structuredNode xmi:type="uml:LoopNode" xmi:id="_4ALwQD1rEfGydckbO_DmyA" name="LoopNode12" incoming="_JgDgcD1sEfGydckbO_DmyA" outgoing="_NJSQ8D1sEfGydckbO_DmyA _l6C00D1sEfGydckbO_DmyA">
+      <edge xmi:type="uml:ControlFlow" xmi:id="_l6C00D1sEfGydckbO_DmyA" target="_Uv-kQD1mEfGDdYk9bCV1FA" source="_4ALwQD1rEfGydckbO_DmyA"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_m-1SoD1sEfGydckbO_DmyA" target="_LvSxcD1nEfGDdYk9bCV1FA" source="_Uv-kQD1mEfGDdYk9bCV1FA"/>
+      <node xmi:type="uml:SendSignalAction" xmi:id="_LvSxcD1nEfGDdYk9bCV1FA" name="Send   heartbeat update" incoming="_m-1SoD1sEfGydckbO_DmyA" signal="_S9JfQD1nEfGDdYk9bCV1FA">
+        <target xmi:type="uml:InputPin" xmi:id="_U0OVoD1nEfGDdYk9bCV1FA" name="target" type="_S9JfQD1nEfGDdYk9bCV1FA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_U0OVoT1nEfGDdYk9bCV1FA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U0OVoj1nEfGDdYk9bCV1FA" value="1"/>
+        </target>
+      </node>
+      <node xmi:type="uml:DataStoreNode" xmi:id="_Uv-kQD1mEfGDdYk9bCV1FA" name="Threads update the respective heartbeats information in shared memory based SPSC queue. " incoming="_l6C00D1sEfGydckbO_DmyA" outgoing="_m-1SoD1sEfGydckbO_DmyA">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_UwDcwD1mEfGDdYk9bCV1FA" value="1"/>
+      </node>
+    </structuredNode>
+    <node xmi:type="uml:InitialNode" xmi:id="_37PU8D1iEfGDdYk9bCV1FA" name="" outgoing="_zQKToD1nEfGDdYk9bCV1FA"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_8W5A4D1iEfGDdYk9bCV1FA" name="connect /tmp/safetyguard.sock" incoming="_zQKToD1nEfGDdYk9bCV1FA" outgoing="_5pChQD1nEfGDdYk9bCV1FA">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_IZvHsD1jEfGDdYk9bCV1FA" annotatedElement="_8W5A4D1iEfGDdYk9bCV1FA">
+        <body>Enable security aspects as required. </body>
+      </ownedComment>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_wng9wD1kEfGDdYk9bCV1FA" name="register with safetyGuard" incoming="_5pChQD1nEfGDdYk9bCV1FA" outgoing="_SeVfgD1rEfGydckbO_DmyA"/>
+    <node xmi:type="uml:ReadStructuralFeatureAction" xmi:id="_8KNk4D1kEfGDdYk9bCV1FA" name="Get the details of app specific shared memory and eventfd" incoming="_SeVfgD1rEfGydckbO_DmyA" outgoing="_JgDgcD1sEfGydckbO_DmyA">
+      <object xmi:type="uml:InputPin" xmi:id="_8KeDkD1kEfGDdYk9bCV1FA" name="object">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8KeqoD1kEfGDdYk9bCV1FA" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8KeqoT1kEfGDdYk9bCV1FA" value="1"/>
+      </object>
+    </node>
+    <node xmi:type="uml:ActivityFinalNode" xmi:id="_nrEf0D1nEfGDdYk9bCV1FA" name="" incoming="_NJSQ8D1sEfGydckbO_DmyA"/>
+  </packagedElement>
+</uml:Model>

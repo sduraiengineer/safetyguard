@@ -1,0 +1,94 @@
+# =========================
+# SafetyGuard Configuration
+#
+# All config parameter are lower case seperated by "_" if required.
+# =========================
+
+config_version: 1
+
+global:
+  log_level: INFO
+  check_interval_ms: 500 # cyclic time to check states of apps
+  state_file: /var/lib/safetyguard/state.yaml
+  log_file: /var/log/safetyguard.log
+  init_file: /etc/safetygurad/config.yaml
+  init_file_gen: /var/lib/safetyguard/gen_config.yaml
+  mode: production # Can be development. In case of development, the app configuration
+                      # will be generated which can act as guidance, for example heartbeat_interval_ms as average heartbeat
+  endpoint: /tmp/safetyguard.sock
+
+watchdog:
+  device: /dev/watchdog
+  timeout_sec: 10
+  pretimeout_sec: 5
+  kick_interval_ms: 3000
+
+recovery:
+  system_reset_on_failure: true
+  max_global_failures: 5
+
+system_apps:
+  - name: systemd
+    timeout_ms: 5000
+    safemonitor:
+      -  heartbeat:
+         heartbeat_update_interval_ms: 500 # Interval it is expected update the heartbeat to safetyguard. It should be less then heartbeat Intervals of threads. Ideally half of the minimum heartbeat interval threads.
+         threads:
+         - main:
+           heartbeat_interval_ms: 1000
+    safeaction:
+     - coresystem:
+       restart: true
+       wait_time_ms: 1000
+       wait_for_reboot_accept: true # for example, safeapp sends this info or user accepts reboot
+     - safestate:
+       - app_name: safeapp
+         manager: systemd
+         systemd:
+          - service_name: safeapp # Runs this app, till system is safe.
+
+apps:
+  - name: app_a
+    timeout_ms: 3000
+    max_retries: 3
+    critical: true
+    manager: systemd
+    systemd:
+    - service_name: app_a # unit file name.
+    safeaction:
+      - systemd:
+        restart: true
+      - coresystem: # If not present, system will not rebooted.
+        restart: true #Upon all retries failure.
+      - safestate:
+        - app_name: safeapp
+          manager: systemd
+          systemd:
+          - service_name: safeapp # Runs this app, till system is safe.
+    safemonitor:
+      -  heartbeat:
+         threads:
+         heartbeat_update_interval_ms: 300
+         - main:
+           heartbeat_interval_ms: 1000
+         - thread_b:
+           heartbeat_interval_ms: 500
+      -  memory:
+         max_mem: 10kb
+
+  - name: app_b
+    timeout_ms: 2000
+    max_retries: 5
+    critical: false
+    manager: docker # Can be another runtime
+    docker:
+    - container_name: app_b
+    safeaction:
+      -  container:
+         restart: true
+    safemonitor:
+      -  heartbeat:
+         threads:
+         - main:
+           heartbeat_interval_ms: 500
+
