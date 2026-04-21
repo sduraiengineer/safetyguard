@@ -1,0 +1,8 @@
+[package]
+name = "safetyguard"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde-saphyr = "0.0.23"
+
