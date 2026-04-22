@@ -22,11 +22,21 @@
     <packagedElement xmi:type="uml:Class" xmi:id="_3VGVUCt3EfGSdM2BU96YzQ" name="SystemMonitor"/>
     <packagedElement xmi:type="uml:Signal" xmi:id="_S9JfQD1nEfGDdYk9bCV1FA" name="heartbeat update"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_e7b44A3VEfGqCqWVgMp83w" name="SafeAction"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_e7b44A3VEfGqCqWVgMp83w" name="SafeAction">
+    <packagedElement xmi:type="uml:Signal" xmi:id="_4pawID2PEfGfLau0z_kqvQ" name="SafeState"/>
+  </packagedElement>
   <packagedElement xmi:type="uml:Package" xmi:id="_ixouYA3VEfGqCqWVgMp83w" name="SafeInstrument"/>
   <packagedElement xmi:type="uml:Activity" xmi:id="_pUvloD1iEfGDdYk9bCV1FA" name="Apps" node="_37PU8D1iEfGDdYk9bCV1FA _8W5A4D1iEfGDdYk9bCV1FA _wng9wD1kEfGDdYk9bCV1FA _8KNk4D1kEfGDdYk9bCV1FA _4ALwQD1rEfGydckbO_DmyA _nrEf0D1nEfGDdYk9bCV1FA" group="_4ALwQD1rEfGydckbO_DmyA">
     <ownedComment xmi:type="uml:Comment" xmi:id="_bpx1AD1jEfGDdYk9bCV1FA">
       <body>Enable security measures</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_W3zuQD14EfGfLau0z_kqvQ">
+      <body>Threads update the datestore via API which is part of client library
+</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_d9ZQ4D14EfGfLau0z_kqvQ">
+      <body>Heartbeat update are based on heartbeat_update_interval.
+Either use threaded model  or  can call API as part of client library</body>
     </ownedComment>
     <edge xmi:type="uml:ControlFlow" xmi:id="_zQKToD1nEfGDdYk9bCV1FA" target="_8W5A4D1iEfGDdYk9bCV1FA" source="_37PU8D1iEfGDdYk9bCV1FA"/>
     <edge xmi:type="uml:ControlFlow" xmi:id="_5pChQD1nEfGDdYk9bCV1FA" target="_wng9wD1kEfGDdYk9bCV1FA" source="_8W5A4D1iEfGDdYk9bCV1FA"/>
@@ -60,5 +70,35 @@
       </object>
     </node>
     <node xmi:type="uml:ActivityFinalNode" xmi:id="_nrEf0D1nEfGDdYk9bCV1FA" name="" incoming="_NJSQ8D1sEfGydckbO_DmyA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_vCJgcD16EfGfLau0z_kqvQ" name="s" node="_3uio0D16EfGfLau0z_kqvQ _NC1r4D2GEfGfLau0z_kqvQ _Txc48D2GEfGfLau0z_kqvQ _YIkDID2GEfGfLau0z_kqvQ _jpH8QD2GEfGfLau0z_kqvQ _PGJ4YD2PEfGfLau0z_kqvQ _zn1soD2PEfGfLau0z_kqvQ _CLKzMD2QEfGfLau0z_kqvQ" group="_jpH8QD2GEfGfLau0z_kqvQ">
+    <edge xmi:type="uml:ControlFlow" xmi:id="_SYhgsD2SEfGlybRkc0nffg" target="_NC1r4D2GEfGfLau0z_kqvQ" source="_3uio0D16EfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_jZu-8D2SEfGlybRkc0nffg" target="_NC1r4D2GEfGfLau0z_kqvQ" source="_3uio0D16EfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_bZFs0D2TEfGlybRkc0nffg" target="_Txc48D2GEfGfLau0z_kqvQ" source="_NC1r4D2GEfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_cbAc0D2TEfGlybRkc0nffg" target="_YIkDID2GEfGfLau0z_kqvQ" source="_Txc48D2GEfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_rXdOAD2TEfGlybRkc0nffg" target="_zn1soD2PEfGfLau0z_kqvQ" source="_jpH8QD2GEfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_sxgKID2TEfGlybRkc0nffg" target="_PGJ4YD2PEfGfLau0z_kqvQ" source="_jpH8QD2GEfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_wxcKcD2TEfGlybRkc0nffg" target="_jpH8QD2GEfGfLau0z_kqvQ" source="_YIkDID2GEfGfLau0z_kqvQ"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_a3unkD4UEfGlybRkc0nffg" target="_jpH8QD2GEfGfLau0z_kqvQ" source="_CLKzMD2QEfGfLau0z_kqvQ"/>
+    <structuredNode xmi:type="uml:LoopNode" xmi:id="_jpH8QD2GEfGfLau0z_kqvQ" name="epoll fds" incoming="_wxcKcD2TEfGlybRkc0nffg _a3unkD4UEfGlybRkc0nffg" outgoing="_rXdOAD2TEfGlybRkc0nffg _sxgKID2TEfGlybRkc0nffg">
+      <node xmi:type="uml:OpaqueAction" xmi:id="_ENJoID2HEfGfLau0z_kqvQ" name="sockfd: Registration: Create app secific shared memory and eventfd"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_vKHZkD2OEfGfLau0z_kqvQ" name="timerfd: Check safemonitor: check for heartbeat and memory"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_2FcM8D2OEfGfLau0z_kqvQ" name="timerfd: safeinstrument: check safeinstrument app related state"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_A7H9ED2PEfGfLau0z_kqvQ" name="timerfd:  update hardware watchdog"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_urilwD4TEfGlybRkc0nffg" name="eventfd: update safeinstrument state"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_ylMX4D4TEfGlybRkc0nffg" name="eventfd: update safemontior heartbeat update"/>
+    </structuredNode>
+    <node xmi:type="uml:InitialNode" xmi:id="_3uio0D16EfGfLau0z_kqvQ" name="" outgoing="_SYhgsD2SEfGlybRkc0nffg _jZu-8D2SEfGlybRkc0nffg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_NC1r4D2GEfGfLau0z_kqvQ" name="Read and parse config file. Keep in details in safeappdb" incoming="_SYhgsD2SEfGlybRkc0nffg _jZu-8D2SEfGlybRkc0nffg" outgoing="_bZFs0D2TEfGlybRkc0nffg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_Txc48D2GEfGfLau0z_kqvQ" name="create timerfd" incoming="_bZFs0D2TEfGlybRkc0nffg" outgoing="_cbAc0D2TEfGlybRkc0nffg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_YIkDID2GEfGfLau0z_kqvQ" name="create sockfd for apps to inquiry" incoming="_cbAc0D2TEfGlybRkc0nffg" outgoing="_wxcKcD2TEfGlybRkc0nffg"/>
+    <node xmi:type="uml:ActivityFinalNode" xmi:id="_PGJ4YD2PEfGfLau0z_kqvQ" name="" incoming="_sxgKID2TEfGlybRkc0nffg"/>
+    <node xmi:type="uml:SendSignalAction" xmi:id="_zn1soD2PEfGfLau0z_kqvQ" name="SendSafeState" incoming="_rXdOAD2TEfGlybRkc0nffg" signal="_4pawID2PEfGfLau0z_kqvQ">
+      <target xmi:type="uml:InputPin" xmi:id="_6Gl4wD2PEfGfLau0z_kqvQ" name="target" type="_4pawID2PEfGfLau0z_kqvQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6Gl4wT2PEfGfLau0z_kqvQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6Gl4wj2PEfGfLau0z_kqvQ" value="1"/>
+      </target>
+    </node>
+    <node xmi:type="uml:AcceptEventAction" xmi:id="_CLKzMD2QEfGfLau0z_kqvQ" name="Accept SafeState: Reboot?" outgoing="_a3unkD4UEfGlybRkc0nffg"/>
   </packagedElement>
 </uml:Model>
