@@ -7,7 +7,7 @@
 config_version: 1
 
 global:
-  log_level: INFO
+  log_level: info
   check_interval_ms: 500 # cyclic time to check states of apps
   state_file: /var/lib/safetyguard/state.yaml
   log_file: /var/log/safetyguard.log
@@ -67,8 +67,8 @@ apps:
           - service_name: safeapp # Runs this app, till system is safe.
     safemonitor:
       -  heartbeat:
-         threads:
          heartbeat_update_interval_ms: 300
+         threads:
          - main:
            heartbeat_interval_ms: 1000
          - thread_b:
