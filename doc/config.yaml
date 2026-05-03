@@ -23,7 +23,7 @@ watchdog:
   pretimeout_sec: 5
   kick_interval_ms: 3000
 
-recovery:
+recover:
   system_reset_on_failure: true
   max_global_failures: 5
 
