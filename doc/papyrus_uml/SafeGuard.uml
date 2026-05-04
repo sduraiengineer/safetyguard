@@ -72,7 +72,6 @@ Either use threaded model  or  can call API as part of client library</body>
     <node xmi:type="uml:ActivityFinalNode" xmi:id="_nrEf0D1nEfGDdYk9bCV1FA" name="" incoming="_NJSQ8D1sEfGydckbO_DmyA"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Activity" xmi:id="_vCJgcD16EfGfLau0z_kqvQ" name="s" node="_3uio0D16EfGfLau0z_kqvQ _NC1r4D2GEfGfLau0z_kqvQ _Txc48D2GEfGfLau0z_kqvQ _YIkDID2GEfGfLau0z_kqvQ _jpH8QD2GEfGfLau0z_kqvQ _PGJ4YD2PEfGfLau0z_kqvQ _zn1soD2PEfGfLau0z_kqvQ _CLKzMD2QEfGfLau0z_kqvQ" group="_jpH8QD2GEfGfLau0z_kqvQ">
-    <edge xmi:type="uml:ControlFlow" xmi:id="_SYhgsD2SEfGlybRkc0nffg" target="_NC1r4D2GEfGfLau0z_kqvQ" source="_3uio0D16EfGfLau0z_kqvQ"/>
     <edge xmi:type="uml:ControlFlow" xmi:id="_jZu-8D2SEfGlybRkc0nffg" target="_NC1r4D2GEfGfLau0z_kqvQ" source="_3uio0D16EfGfLau0z_kqvQ"/>
     <edge xmi:type="uml:ControlFlow" xmi:id="_bZFs0D2TEfGlybRkc0nffg" target="_Txc48D2GEfGfLau0z_kqvQ" source="_NC1r4D2GEfGfLau0z_kqvQ"/>
     <edge xmi:type="uml:ControlFlow" xmi:id="_cbAc0D2TEfGlybRkc0nffg" target="_YIkDID2GEfGfLau0z_kqvQ" source="_Txc48D2GEfGfLau0z_kqvQ"/>
@@ -88,8 +87,8 @@ Either use threaded model  or  can call API as part of client library</body>
       <node xmi:type="uml:OpaqueAction" xmi:id="_urilwD4TEfGlybRkc0nffg" name="eventfd: update safeinstrument state"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_ylMX4D4TEfGlybRkc0nffg" name="eventfd: update safemontior heartbeat update"/>
     </structuredNode>
-    <node xmi:type="uml:InitialNode" xmi:id="_3uio0D16EfGfLau0z_kqvQ" name="" outgoing="_SYhgsD2SEfGlybRkc0nffg _jZu-8D2SEfGlybRkc0nffg"/>
-    <node xmi:type="uml:OpaqueAction" xmi:id="_NC1r4D2GEfGfLau0z_kqvQ" name="Read and parse config file. Keep in details in safeappdb" incoming="_SYhgsD2SEfGlybRkc0nffg _jZu-8D2SEfGlybRkc0nffg" outgoing="_bZFs0D2TEfGlybRkc0nffg"/>
+    <node xmi:type="uml:InitialNode" xmi:id="_3uio0D16EfGfLau0z_kqvQ" name="" outgoing="_jZu-8D2SEfGlybRkc0nffg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_NC1r4D2GEfGfLau0z_kqvQ" name="Read and parse config file. Keep in details in safeappdb" incoming="_jZu-8D2SEfGlybRkc0nffg" outgoing="_bZFs0D2TEfGlybRkc0nffg"/>
     <node xmi:type="uml:OpaqueAction" xmi:id="_Txc48D2GEfGfLau0z_kqvQ" name="create timerfd" incoming="_bZFs0D2TEfGlybRkc0nffg" outgoing="_cbAc0D2TEfGlybRkc0nffg"/>
     <node xmi:type="uml:OpaqueAction" xmi:id="_YIkDID2GEfGfLau0z_kqvQ" name="create sockfd for apps to inquiry" incoming="_cbAc0D2TEfGlybRkc0nffg" outgoing="_wxcKcD2TEfGlybRkc0nffg"/>
     <node xmi:type="uml:ActivityFinalNode" xmi:id="_PGJ4YD2PEfGfLau0z_kqvQ" name="" incoming="_sxgKID2TEfGlybRkc0nffg"/>
@@ -100,5 +99,87 @@ Either use threaded model  or  can call API as part of client library</body>
       </target>
     </node>
     <node xmi:type="uml:AcceptEventAction" xmi:id="_CLKzMD2QEfGfLau0z_kqvQ" name="Accept SafeState: Reboot?" outgoing="_a3unkD4UEfGlybRkc0nffg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_2dX6oEfoEfGljekBlCO_pw" name="Application Interaction Sequence Diagram">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_wSmlAEfpEfGljekBlCO_pw">
+      <body>Creates /var/safetyguard.sock</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_RyGaoEfqEfGljekBlCO_pw">
+      <body>Creates eventfd
+Creates shared memory </body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_c6z_AEfrEfGljekBlCO_pw">
+      <body>Application's normal work</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_1x0U0EfrEfGljekBlCO_pw">
+      <body>Enqueue heartbeat/data (SPSC)</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_W5Hs4EfsEfGljekBlCO_pw">
+      <body>Identifies app
+Dequeues data
+Update heartbeat</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_rLyU0EfsEfGljekBlCO_pw">
+      <body>epoll waits</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_05sIEEftEfGljekBlCO_pw">
+      <body>epoll waits</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_-sheoEfuEfGljekBlCO_pw">
+      <body>Check heartbeat state
+Check memory consumption
+Check safeinstrument state</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_wszsYEf3EfGEZrSClggWXQ">
+      <body>SafeInstrument monitors instrumented logic</body>
+    </ownedComment>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_5m20EEfoEfGljekBlCO_pw" name="Applications" coveredBy="_7k4xkEfpEfGljekBlCO_pw _HiE8UEfqEfGljekBlCO_pw _aBFY0EfrEfGljekBlCO_pw _aA_SMEfrEfGljekBlCO_pw _aBH1EEfrEfGljekBlCO_pw _zYCPcEfqEfGljekBlCO_pw _zX-lEEfqEfGljekBlCO_pw _LxZxkEfsEfGljekBlCO_pw"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_BOUUsEfpEfGljekBlCO_pw" name="SafetyGuard" coveredBy="_tRN3oEfpEfGljekBlCO_pw _tRFUwEfpEfGljekBlCO_pw _tRPFwEfpEfGljekBlCO_pw _7k5_sEfpEfGljekBlCO_pw _pAjPgEfwEfGljekBlCO_pw _HiDuMEfqEfGljekBlCO_pw _D4AycEf3EfGEZrSClggWXQ _nYWfcEfsEfGljekBlCO_pw _nYRm8EfsEfGljekBlCO_pw _QK8jsEf3EfGEZrSClggWXQ _Lxa_sEfsEfGljekBlCO_pw _TrcP8EfsEfGljekBlCO_pw _Trbo4EfsEfGljekBlCO_pw _aceCYEftEfGljekBlCO_pw _acc0QEftEfGljekBlCO_pw _acepcEftEfGljekBlCO_pw _ikgEAEfuEfGljekBlCO_pw _ikbykEfuEfGljekBlCO_pw _XUrgIEfvEfGljekBlCO_pw _crfCMEfuEfGljekBlCO_pw _6FDWgEfpEfGljekBlCO_pw"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_MUP4kEfvEfGljekBlCO_pw" name="SafeAction" coveredBy="_XUtVUEfvEfGljekBlCO_pw"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_c1XsEEfwEfGljekBlCO_pw" name="SafeInstrument" coveredBy="_pAgzQEfwEfGljekBlCO_pw _D4CAkEf3EfGEZrSClggWXQ _tJfWoEf3EfGEZrSClggWXQ _tJc6YEf3EfGEZrSClggWXQ _tJf9sEf3EfGEZrSClggWXQ _QK7VkEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_tRN3oEfpEfGljekBlCO_pw" name="ActionExecutionSpecification3Start" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_tRFUwEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_tRFUwEfpEfGljekBlCO_pw" name="ActionExecutionSpecification3" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_tRPFwEfpEfGljekBlCO_pw" start="_tRN3oEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_tRPFwEfpEfGljekBlCO_pw" name="ActionExecutionSpecification3Finish" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_tRFUwEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_7k4xkEfpEfGljekBlCO_pw" name="Message10SendEvent" covered="_5m20EEfoEfGljekBlCO_pw" message="_7kw1wEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_pAgzQEfwEfGljekBlCO_pw" name="Message46SendEvent" covered="_c1XsEEfwEfGljekBlCO_pw" message="_pAdv8EfwEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_7k5_sEfpEfGljekBlCO_pw" name="Message10ReceiveEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_7kw1wEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_6FDWgEfpEfGljekBlCO_pw" name="BehaviorExecutionSpecification7" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_HiDuMEfqEfGljekBlCO_pw" start="_7k5_sEfpEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_pAjPgEfwEfGljekBlCO_pw" name="Message46ReceiveEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_pAdv8EfwEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_HiDuMEfqEfGljekBlCO_pw" name="Message12SendEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_HiAq4EfqEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_HiE8UEfqEfGljekBlCO_pw" name="Message12ReceiveEvent" covered="_5m20EEfoEfGljekBlCO_pw" message="_HiAq4EfqEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_D4AycEf3EfGEZrSClggWXQ" name="Message49SendEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_D3pmEEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_nYRm8EfsEfGljekBlCO_pw" name="BehaviorExecutionSpecification28" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_nYWfcEfsEfGljekBlCO_pw" start="_D4AycEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_D4CAkEf3EfGEZrSClggWXQ" name="Message49ReceiveEvent" covered="_c1XsEEfwEfGljekBlCO_pw" message="_D3pmEEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_aBFY0EfrEfGljekBlCO_pw" name="ActionExecutionSpecification18Start" covered="_5m20EEfoEfGljekBlCO_pw" execution="_aA_SMEfrEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_aA_SMEfrEfGljekBlCO_pw" name="ActionExecutionSpecification18" covered="_5m20EEfoEfGljekBlCO_pw" finish="_aBH1EEfrEfGljekBlCO_pw" start="_aBFY0EfrEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_tJfWoEf3EfGEZrSClggWXQ" name="ActionExecutionSpecification54Start" covered="_c1XsEEfwEfGljekBlCO_pw" execution="_tJc6YEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_tJc6YEf3EfGEZrSClggWXQ" name="ActionExecutionSpecification54" covered="_c1XsEEfwEfGljekBlCO_pw" finish="_tJf9sEf3EfGEZrSClggWXQ" start="_tJfWoEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_aBH1EEfrEfGljekBlCO_pw" name="ActionExecutionSpecification18Finish" covered="_5m20EEfoEfGljekBlCO_pw" execution="_aA_SMEfrEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_nYWfcEfsEfGljekBlCO_pw" name="BehaviorExecutionSpecification28Finish" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_nYRm8EfsEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_zYCPcEfqEfGljekBlCO_pw" name="BehaviorExecutionSpecification15Start" covered="_5m20EEfoEfGljekBlCO_pw" execution="_zX-lEEfqEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_zX-lEEfqEfGljekBlCO_pw" name="BehaviorExecutionSpecification15" covered="_5m20EEfoEfGljekBlCO_pw" finish="_LxZxkEfsEfGljekBlCO_pw" start="_zYCPcEfqEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_tJf9sEf3EfGEZrSClggWXQ" name="ActionExecutionSpecification54Finish" covered="_c1XsEEfwEfGljekBlCO_pw" execution="_tJc6YEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_QK7VkEf3EfGEZrSClggWXQ" name="Message51SendEvent" covered="_c1XsEEfwEfGljekBlCO_pw" message="_QK4SQEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_QK8jsEf3EfGEZrSClggWXQ" name="Message51ReceiveEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_QK4SQEf3EfGEZrSClggWXQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_LxZxkEfsEfGljekBlCO_pw" name="Message23SendEvent" covered="_5m20EEfoEfGljekBlCO_pw" message="_LxXVUEfsEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_Lxa_sEfsEfGljekBlCO_pw" name="Message23ReceiveEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_LxXVUEfsEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_Trbo4EfsEfGljekBlCO_pw" name="BehaviorExecutionSpecification25" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_TrcP8EfsEfGljekBlCO_pw" start="_Lxa_sEfsEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_TrcP8EfsEfGljekBlCO_pw" name="BehaviorExecutionSpecification25Finish" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_Trbo4EfsEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_aceCYEftEfGljekBlCO_pw" name="BehaviorExecutionSpecification32Start" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_acc0QEftEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_acc0QEftEfGljekBlCO_pw" name="BehaviorExecutionSpecification32" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_acepcEftEfGljekBlCO_pw" start="_aceCYEftEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_acepcEftEfGljekBlCO_pw" name="BehaviorExecutionSpecification32Finish" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_acc0QEftEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_ikgEAEfuEfGljekBlCO_pw" name="BehaviorExecutionSpecification38Start" covered="_BOUUsEfpEfGljekBlCO_pw" execution="_ikbykEfuEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_ikbykEfuEfGljekBlCO_pw" name="BehaviorExecutionSpecification38" covered="_BOUUsEfpEfGljekBlCO_pw" finish="_XUrgIEfvEfGljekBlCO_pw" start="_ikgEAEfuEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XUrgIEfvEfGljekBlCO_pw" name="Message43SendEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_XUnOsEfvEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XUtVUEfvEfGljekBlCO_pw" name="Message43ReceiveEvent" covered="_MUP4kEfvEfGljekBlCO_pw" message="_XUnOsEfvEfGljekBlCO_pw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_crfCMEfuEfGljekBlCO_pw" name="Message36ReceiveEvent" covered="_BOUUsEfpEfGljekBlCO_pw" message="_crbX0EfuEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_7kw1wEfpEfGljekBlCO_pw" name="Register and Request fds" receiveEvent="_7k5_sEfpEfGljekBlCO_pw" sendEvent="_7k4xkEfpEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_HiAq4EfqEfGljekBlCO_pw" name="memfd and eventfd" messageSort="reply" receiveEvent="_HiE8UEfqEfGljekBlCO_pw" sendEvent="_HiDuMEfqEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_LxXVUEfsEfGljekBlCO_pw" name="notify via eventfd" messageSort="asynchCall" receiveEvent="_Lxa_sEfsEfGljekBlCO_pw" sendEvent="_LxZxkEfsEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_crbX0EfuEfGljekBlCO_pw" name="Timerfd" messageSort="asynchCall" receiveEvent="_crfCMEfuEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_XUnOsEfvEfGljekBlCO_pw" name="Restart/SafeState" receiveEvent="_XUtVUEfvEfGljekBlCO_pw" sendEvent="_XUrgIEfvEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_pAdv8EfwEfGljekBlCO_pw" name="Register and Request fds" receiveEvent="_pAjPgEfwEfGljekBlCO_pw" sendEvent="_pAgzQEfwEfGljekBlCO_pw"/>
+    <message xmi:type="uml:Message" xmi:id="_D3pmEEf3EfGEZrSClggWXQ" name="memfd end eventfd" messageSort="reply" receiveEvent="_D4CAkEf3EfGEZrSClggWXQ" sendEvent="_D4AycEf3EfGEZrSClggWXQ"/>
+    <message xmi:type="uml:Message" xmi:id="_QK4SQEf3EfGEZrSClggWXQ" name="notify via event fd" messageSort="asynchCall" receiveEvent="_QK8jsEf3EfGEZrSClggWXQ" sendEvent="_QK7VkEf3EfGEZrSClggWXQ"/>
   </packagedElement>
 </uml:Model>
