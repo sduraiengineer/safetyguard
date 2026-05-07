@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 1122.5197 793.7008"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="SPSP_Queue.svg"
+   inkscape:export-filename="SPSC_SG_Reads.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.64882602"
+     inkscape:cx="511.69341"
+     inkscape:cy="353.71577"
+     inkscape:window-width="1366"
+     inkscape:window-height="696"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4052"
+     showguides="true" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker1583"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path1581" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1583-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path1581-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1583-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path1581-70" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1583-6-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path1581-7-2" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     sodipodi:insensitive="true"
+     style="display:inline">
+    <ellipse
+       style="fill:none;stroke:#000000;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path254"
+       cx="552.50232"
+       cy="417.16278"
+       rx="214.68578"
+       ry="215.96323" />
+    <ellipse
+       style="fill:none;stroke:#000000;stroke-width:1.44231;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path254-3"
+       cx="546.3559"
+       cy="418.12872"
+       rx="311.12192"
+       ry="309.0387" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.982808;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 289.3389,244.22543 78.7922,62.48579"
+       id="path1153" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.00029;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 395.64406,147.5753 58.18992,77.99894"
+       id="path1155" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.02522;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 552.98002,108.74594 2.14421,91.69668"
+       id="path1157" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.969748;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 236.0575,411.3466 102.47525,1.27293"
+       id="path1159" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.06016;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 278.67082,575.04055 82.01259,-60.09739"
+       id="path1161" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.981486;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 443.44588,603.10011 389.1754,685.5544"
+       id="path1163" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.01594;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 555.93325,632.86661 1.66555,94.48715"
+       id="path1165" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.990758;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 767.27846,416.53675 90.34843,-0.74613"
+       id="path1167" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.05157;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 660.16045,604.10801 52.57923,74.96001"
+       id="path1169" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.02861;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 741.15061,520.41696 83.77804,34.90567"
+       id="path1171" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.05261;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 664.63252,233.12051 47.86545,-76.27029"
+       id="path1175" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.981279;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 740.41236,311.95576 817.9769,266.91737"
+       id="path1177" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="State1"
+     sodipodi:insensitive="true"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:none;stroke:#0000a9;stroke-width:3.26929;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="551.08453"
+       y="234.11111"
+       id="text2015"><tspan
+         sodipodi:role="line"
+         id="tspan2013"
+         x="551.08453"
+         y="234.11111" /></text>
+    <g
+       id="g2402"
+       transform="translate(0.74541182,-3.5493018)">
+      <path
+         style="fill:none;stroke:#00a300;stroke-width:3.55211;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583)"
+         d="M 586.41915,219.45298 565.57,259.14636"
+         id="path1362" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#00a300;fill-opacity:1;stroke:#00a300;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="509.54901"
+         y="237.85632"
+         id="text2021"><tspan
+           sodipodi:role="line"
+           id="tspan2019"
+           x="509.54901"
+           y="237.85632">Write  Ptr</tspan></text>
+    </g>
+    <g
+       id="g2495">
+      <path
+         style="fill:none;stroke:#0000a9;stroke-width:2.7924;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-6)"
+         d="M 637.81516,112.30535 652.1517,76.631829"
+         id="path1362-5" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#0000a9;fill-opacity:1;stroke:#0000a9;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="660.96741"
+         y="90.416916"
+         id="text2254"><tspan
+           sodipodi:role="line"
+           id="tspan2252"
+           x="660.96741"
+           y="90.416916">Read Ptr</tspan></text>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="State2"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <g
+       id="g2402-9"
+       transform="translate(126.40968,75.130634)"
+       sodipodi:insensitive="true"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#00a300;stroke-width:3.55211;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-2)"
+         d="M 586.41915,219.45298 565.57,259.14636"
+         id="path1362-3" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#00a300;fill-opacity:1;stroke:#00a300;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="509.54901"
+         y="237.85632"
+         id="text2021-6"><tspan
+           sodipodi:role="line"
+           id="tspan2019-0"
+           x="509.54901"
+           y="237.85632">Write  Ptr</tspan></text>
+    </g>
+    <g
+       id="g2495-6"
+       transform="translate(-0.19847263,0.11196974)"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#0000a9;stroke-width:2.7924;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-6-6)"
+         d="M 637.81516,112.30535 652.1517,76.631829"
+         id="path1362-5-1" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#0000a9;fill-opacity:1;stroke:#0000a9;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="660.96741"
+         y="90.416916"
+         id="text2254-8"><tspan
+           sodipodi:role="line"
+           id="tspan2252-7"
+           x="660.96741"
+           y="90.416916">Read Ptr</tspan></text>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="g3194"
+     inkscape:label="State3"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <g
+       id="g3184"
+       transform="translate(126.40968,75.130634)"
+       sodipodi:insensitive="true"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#00a300;stroke-width:3.55211;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-2)"
+         d="M 586.41915,219.45298 565.57,259.14636"
+         id="path3178" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#00a300;fill-opacity:1;stroke:#00a300;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="509.54901"
+         y="237.85632"
+         id="text3182"><tspan
+           sodipodi:role="line"
+           id="tspan3180"
+           x="509.54901"
+           y="237.85632">Write  Ptr</tspan></text>
+    </g>
+    <g
+       id="g3192"
+       transform="translate(-0.19847263,0.11196974)"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#0000a9;stroke-width:2.7924;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-6-6)"
+         d="M 637.81516,112.30535 652.1517,76.631829"
+         id="path3186" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#0000a9;fill-opacity:1;stroke:#0000a9;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="660.96741"
+         y="90.416916"
+         id="text3190"><tspan
+           sodipodi:role="line"
+           id="tspan3188"
+           x="660.96741"
+           y="90.416916">Read Ptr</tspan></text>
+    </g>
+    <g
+       id="g3820"
+       style="stroke-width:3.64724;stroke-dasharray:none">
+      <path
+         style="fill:#0000a9;fill-opacity:1;stroke:#b44a36;stroke-width:3.64724;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         d="m 816.13582,254.75812 20.46941,-38.14164"
+         id="path3397" />
+      <path
+         style="fill:#0000a9;fill-opacity:1;stroke:#b44a36;stroke-width:3.64724;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         d="m 835.44066,216.82455 31.2158,12.31575"
+         id="path3399" />
+      <path
+         style="fill:#0000a9;fill-opacity:1;stroke:#b44a36;stroke-width:3.64724;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1583-6)"
+         d="m 866.34787,229.39619 30.12657,-47.78922"
+         id="path3401" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#0000a9;fill-opacity:1;stroke:#b44a36;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="862.86102"
+       y="152.25063"
+       id="text3959"><tspan
+         sodipodi:role="line"
+         id="tspan3957"
+         x="862.86102"
+         y="152.25063">Notifiy via eventfd</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="g4052"
+     inkscape:label="State4"
+     style="display:inline">
+    <g
+       id="g4030"
+       transform="translate(126.40968,75.130634)"
+       sodipodi:insensitive="true"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#00a300;stroke-width:3.55211;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-2)"
+         d="M 586.41915,219.45298 565.57,259.14636"
+         id="path4024" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#00a300;fill-opacity:1;stroke:#00a300;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="509.54901"
+         y="237.85632"
+         id="text4028"><tspan
+           sodipodi:role="line"
+           id="tspan4026"
+           x="509.54901"
+           y="237.85632">Write  Ptr</tspan></text>
+    </g>
+    <g
+       id="g4038"
+       transform="translate(142.36253,87.421951)"
+       style="display:inline">
+      <path
+         style="fill:none;stroke:#0000a9;stroke-width:2.7924;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker1583-6-6)"
+         d="M 637.81516,112.30535 652.1517,76.631829"
+         id="path4032" />
+      <text
+         xml:space="preserve"
+         style="font-size:16px;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';fill:#0000a9;fill-opacity:1;stroke:#0000a9;stroke-width:1.00157;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         x="660.96741"
+         y="90.416916"
+         id="text4036"><tspan
+           sodipodi:role="line"
+           id="tspan4034"
+           x="660.96741"
+           y="90.416916">Read Ptr</tspan></text>
+    </g>
+  </g>
+</svg>
