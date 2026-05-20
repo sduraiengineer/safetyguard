@@ -1,10 +1,2 @@
-[package]
-name = "safetyguard"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-serde-saphyr = { version = "0.0.25", features = ["serialize","deserialize","figment"] }
-figment = { version = "0.10" }
-serde = { version = "1.0.228", features = ["derive"] }
-
+[workspace]
+members = ["safetyguard"]
