@@ -34,20 +34,12 @@ pub struct Header {
     pub initialized: AtomicU32,
 }
 
-#[repr(C)]
-pub struct Slot<T: SharedPod> {
-    pub sequence: u64,
-    pub crc32: u32,
-    pub _padding: u32,
-    pub value: UnsafeCell<MaybeUninit<T>>,
-}
-
 #[repr(C, align(64))]
 pub struct SharedLayout<T: SharedPod, const N: usize> {
     pub header: Header,
     pub read_index: CacheAligned<AtomicU64>,
     pub write_index: CacheAligned<AtomicU64>,
-    pub storage: [Slot<T>; N],
+    pub storage: [MaybeUninit<T>; N],
 }
 
 pub struct MemfdStorage<T: SharedPod, const N: usize> {
@@ -104,11 +96,8 @@ impl<T: SharedPod, const N: usize> MemfdStorage<T, N> {
 
                     write_index: CacheAligned(AtomicU64::new(0)),
 
-                    storage: std::array::from_fn(|i| Slot {
-                        sequence: i as u64,
-                        crc32: 0,
-                        _padding: 0,
-                        value: UnsafeCell::new(MaybeUninit::uninit()),
+                    storage: std::array::from_fn(|i| {
+                        MaybeUninit::uninit()
                     }),
                 },
             );
@@ -277,12 +266,6 @@ mod tests {
             0
         );
 
-        /*
-         * Validate sequence initialization
-         */
-        for (i, slot) in layout.storage.iter().enumerate() {
-            assert_eq!(slot.sequence, i as u64);
-        }
     }
 
     #[test]
@@ -311,11 +294,6 @@ mod tests {
         );
 
         println!(
-            "Slot size: {}",
-            size_of::<Slot<TestMessage>>()
-        );
-
-        println!(
             "SharedLayout size: {}",
             size_of::<SharedLayout<TestMessage, 128>>()
         );
@@ -330,16 +308,14 @@ mod tests {
     }
 
     #[test]
-    fn write_and_read_slot() {
+    fn write_and_read_() {
         const N: usize = 16;
 
         let storage =
             MemfdStorage::<TestMessage, N>::create("rw-test")
                 .unwrap();
 
-        let layout = unsafe {
-            storage.ptr.as_ref()
-        };
+        let layout = storage.layout();
 
         let slot = &layout.storage[0];
 
@@ -350,11 +326,11 @@ mod tests {
         };
 
         unsafe {
-            (*slot.value.get()).write(msg);
+            slot.as_ptr().cast::<TestMessage>().cast_mut().write(msg);
         }
 
         let read_back = unsafe {
-            (*slot.value.get()).assume_init()
+            slot.assume_init()
         };
 
         assert_eq!(msg, read_back);
@@ -397,12 +373,12 @@ mod tests {
         };
 
         unsafe {
-            (*storage.layout().storage[0].value.get()).write(msg);
+            storage.layout().storage[0].as_ptr().cast::<TestMessage>().cast_mut().write(msg);
         }
 
         /* Read back from attached fd */
         let read_back = unsafe {
-            (*attached_storage.layout().storage[0].value.get()).assume_init()
+            attached_storage.layout().storage[0].assume_init()
         };
 
         assert_eq!(msg, read_back);
