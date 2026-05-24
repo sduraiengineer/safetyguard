@@ -1,2 +1,3 @@
 [workspace]
-members = ["safetyguard"]
+members = ["safetyguard", "memfd_ringbuf"]
+resolver = "3"
