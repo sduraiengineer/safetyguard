@@ -2,20 +2,18 @@
 use std::{
     io,
     mem::{size_of, MaybeUninit},
-    os::fd::{ AsFd, FromRawFd, IntoRawFd, OwnedFd },
-    ptr::{self, NonNull},
+    os::fd::{ AsFd, OwnedFd },
+    ptr::{self, NonNull, addr_of_mut},
     sync::atomic::{AtomicU32, AtomicU64, Ordering},
-    cell::UnsafeCell,
 };
 
 // libraries
-use memmap2::MmapMut;
 use rustix::{
     fs::{ftruncate, memfd_create, MemfdFlags},
     mm::{mmap, munmap, MapFlags, ProtFlags },
     io::dup,
 };
-use ringbuf::storage::{Owning, Storage};
+use ringbuf::storage::Storage;
 
 // Crate
 use crate::traits::SharedPod;
@@ -201,6 +199,51 @@ impl <T: SharedPod, const N: usize> Drop for MemfdStorage<T, N> {
         }
     }
 }
+
+unsafe impl<T: SharedPod, const N: usize> Storage for MemfdStorage<T, N> {
+    type Item = T;
+
+    fn len(&self) -> usize {
+        N
+    }
+
+    fn as_mut_ptr(&self) -> *mut MaybeUninit<Self::Item> {
+        unsafe {
+           let layout_ptr = self.ptr.as_ptr();
+           (*layout_ptr).storage.as_mut_ptr()
+        }
+    }
+}
+
+pub unsafe trait MemfdStorageTrait: Storage {
+    fn header_ptr(&self) -> *mut Header;
+    fn read_index_ptr(&self) -> *mut AtomicU64;
+    fn write_index_ptr(&self) -> *mut AtomicU64;
+}
+
+unsafe impl<T: SharedPod, const N: usize> MemfdStorageTrait for MemfdStorage<T, N> {
+    fn header_ptr(&self) -> *mut Header {
+        unsafe {
+            let layout_ptr = self.ptr.as_ptr();
+            addr_of_mut!((*layout_ptr).header)
+        }
+    }
+
+    fn read_index_ptr(&self) -> *mut AtomicU64 {
+        unsafe {
+            let layout_ptr = self.ptr.as_ptr();
+            addr_of_mut!((*layout_ptr).read_index.0)
+        }
+    }
+
+    fn write_index_ptr(&self) -> *mut AtomicU64 {
+        unsafe {
+            let layout_ptr = self.ptr.as_ptr();
+            addr_of_mut!((*layout_ptr).write_index.0)
+        }
+    }
+}
+
 
 
 #[cfg(test)]
