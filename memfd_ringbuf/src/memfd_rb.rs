@@ -14,10 +14,10 @@ use rustix::{
     mm::{mmap, munmap, MapFlags, ProtFlags },
     io::dup,
 };
-use ringbuf:: {
+use ringbuf::{
     storage::Storage,
-    traits::{ Observer, Consumer, Producer, RingBuffer, SplitRef},
-    wrap::{Prod, Cons},
+    traits::{Observer, Consumer, Producer, RingBuffer},
+    wrap::{Prod, Cons}
 };
 
 // Crate
@@ -272,7 +272,7 @@ unsafe impl<T: SharedPod, const N: usize> MemfdStorageTrait for MemfdStorage<T, 
 }
 
 pub struct MemfdRb<S:MemfdStorageTrait> {
-    storage: S,
+    pub storage: S,
 }
 
 impl<S: MemfdStorageTrait> AsRef<Self> for MemfdRb<S> {
@@ -364,15 +364,6 @@ impl <S:MemfdStorageTrait> RingBuffer for MemfdRb<S> {
     }
 }
 
-impl <S:MemfdStorageTrait> SplitRef for MemfdRb<S> {
-    type RefProd<'a> = Prod<&'a Self> where Self: 'a;
-    type RefCons<'a> = Cons<&'a Self> where Self: 'a;
-
-    fn split_ref(&mut self) -> (Self::RefProd<'_>, Self::RefCons<'_>) {
-        (Prod::new(self), Cons::new(self))
-    }
-}
-
 impl<S: MemfdStorageTrait> Drop for MemfdRb<S> {
     fn drop(&mut self) {
         unsafe {
@@ -382,6 +373,15 @@ impl<S: MemfdStorageTrait> Drop for MemfdRb<S> {
     }
 }
 
+impl <S: MemfdStorageTrait> MemfdRb<S> {
+    pub fn get_producer(&self) -> Prod<&Self> {
+        Prod::new(self)
+    }
+
+    pub fn get_consumer(&self) -> Cons<&Self> {
+        Cons::new(self)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -514,6 +514,44 @@ mod tests {
         };
 
         assert_eq!(msg, read_back);
+    }
+
+    #[test]
+    fn producer_consumer() {
+        const N: usize = 16;
+        let storage = MemfdStorage::<TestMessage, N>::create("pc-test").unwrap();
+        let rb = MemfdRb { storage };
+
+        let mut prod = rb.get_producer();
+        let mut cons = rb.get_consumer();
+
+        let msg = TestMessage { id: 1, value: 100, _padding: 0 };
+        prod.try_push(msg).unwrap();
+
+        let read = cons.try_pop().unwrap();
+        assert_eq!(msg, read);
+    }
+
+
+    #[test]
+    fn producer_consumer_attach_storage() {
+        const N: usize = 16;
+        let storage = MemfdStorage::<TestMessage, N>::create("pc-test-attach").unwrap();
+
+        let dup_fd = storage.dup_fd().unwrap();
+        let attached_storage = MemfdStorage::<TestMessage, N>::attach(dup_fd).unwrap();
+
+        let rb_prod = MemfdRb { storage };
+        let rb_cons = MemfdRb { storage: attached_storage };
+
+        let mut prod = rb_prod.get_producer();
+        let mut cons = rb_cons.get_consumer();
+
+        let msg = TestMessage { id: 1, value: 100, _padding: 0 };
+        prod.try_push(msg).unwrap();
+
+        let read = cons.try_pop().unwrap();
+        assert_eq!(msg, read);
     }
 
     #[test]
