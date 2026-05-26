@@ -1,5 +1,8 @@
-mod traits;
-mod memfd_rb;
+pub mod traits;
+pub mod memfd_rb;
+
+pub use memfd_rb::{MemfdRb, MemfdStorage, MemfdStorageTrait};
+pub use traits::SharedPod;
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right

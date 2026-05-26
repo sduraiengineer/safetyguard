@@ -4,7 +4,8 @@ use std::{
     mem::{size_of, MaybeUninit},
     os::fd::{ AsFd, OwnedFd },
     ptr::{self, NonNull, addr_of_mut},
-    sync::atomic::{AtomicU32, AtomicU64, Ordering},
+    sync::atomic::{AtomicU32, AtomicU64, AtomicBool, Ordering},
+    num::NonZeroUsize
 };
 
 // libraries
@@ -13,7 +14,11 @@ use rustix::{
     mm::{mmap, munmap, MapFlags, ProtFlags },
     io::dup,
 };
-use ringbuf::storage::Storage;
+use ringbuf:: {
+    storage::Storage,
+    traits::{ Observer, Consumer, Producer, RingBuffer, SplitRef},
+    wrap::{Prod, Cons},
+};
 
 // Crate
 use crate::traits::SharedPod;
@@ -37,6 +42,8 @@ pub struct SharedLayout<T: SharedPod, const N: usize> {
     pub header: Header,
     pub read_index: CacheAligned<AtomicU64>,
     pub write_index: CacheAligned<AtomicU64>,
+    pub read_held: AtomicBool,
+    pub write_held: AtomicBool,
     pub storage: [MaybeUninit<T>; N],
 }
 
@@ -94,7 +101,11 @@ impl<T: SharedPod, const N: usize> MemfdStorage<T, N> {
 
                     write_index: CacheAligned(AtomicU64::new(0)),
 
-                    storage: std::array::from_fn(|i| {
+                    read_held: AtomicBool::new(false),
+
+                    write_held: AtomicBool::new(false),
+
+                    storage: std::array::from_fn(|_i| {
                         MaybeUninit::uninit()
                     }),
                 },
@@ -219,6 +230,8 @@ pub unsafe trait MemfdStorageTrait: Storage {
     fn header_ptr(&self) -> *mut Header;
     fn read_index_ptr(&self) -> *mut AtomicU64;
     fn write_index_ptr(&self) -> *mut AtomicU64;
+    fn read_held_ptr(&self) -> *mut u8;
+    fn write_held_ptr(&self) -> *mut u8;
 }
 
 unsafe impl<T: SharedPod, const N: usize> MemfdStorageTrait for MemfdStorage<T, N> {
@@ -242,8 +255,132 @@ unsafe impl<T: SharedPod, const N: usize> MemfdStorageTrait for MemfdStorage<T, 
             addr_of_mut!((*layout_ptr).write_index.0)
         }
     }
+    
+    fn read_held_ptr(&self) -> *mut u8 {
+        unsafe { 
+            let layout_ptr = self.ptr.as_ptr();
+            addr_of_mut!((*layout_ptr).read_held) as *mut u8
+        }
+    }
+
+    fn write_held_ptr(&self) -> *mut u8 {
+        unsafe {
+            let layout_ptr = self.ptr.as_ptr();
+            addr_of_mut!((*layout_ptr).write_held) as *mut u8
+        }
+    }
 }
 
+pub struct MemfdRb<S:MemfdStorageTrait> {
+    storage: S,
+}
+
+impl<S: MemfdStorageTrait> AsRef<Self> for MemfdRb<S> {
+    fn as_ref(&self) -> &Self {
+        self
+    }
+}
+
+impl <S:MemfdStorageTrait> Observer for MemfdRb<S> {
+    type Item = S::Item;
+
+    #[inline]
+    fn capacity(&self) -> NonZeroUsize {
+        NonZeroUsize::new(self.storage.len()).expect("Capacity must be non-zero")
+    }
+
+    fn read_index(&self) -> usize {
+        unsafe { (*self.storage.read_index_ptr()).load(Ordering::Acquire) as usize }
+    }
+
+    fn write_index(&self) -> usize {
+        unsafe { (*self.storage.write_index_ptr()).load(Ordering::Acquire) as usize }
+    }
+
+    unsafe fn unsafe_slices(&self, start: usize, end: usize)
+        -> (&[MaybeUninit<Self::Item>], &[MaybeUninit<Self::Item>]) {
+        unsafe {
+            let (first, second) = self.unsafe_slices_mut(start, end);
+            (first, second)
+        }
+    }
+
+    unsafe fn unsafe_slices_mut(&self, start: usize, end: usize)
+        -> (&mut [MaybeUninit<Self::Item>], &mut [MaybeUninit<Self::Item>]) {
+        let ptr = self.storage.as_mut_ptr();
+        let len = self.storage.len();
+        unsafe {
+            if start <= end {
+                (std::slice::from_raw_parts_mut(ptr.add(start), end - start), &mut [])
+            } else {
+                (
+                    std::slice::from_raw_parts_mut(ptr.add(start), len - start),
+                    std::slice::from_raw_parts_mut(ptr, end),
+                )
+            }
+        }
+    }
+
+    fn read_is_held(&self) -> bool {
+        unsafe {
+            let ptr = self.storage.read_held_ptr() as *const AtomicBool;
+            (*ptr).load(Ordering::Acquire)
+        }
+    }
+
+    fn write_is_held(&self) -> bool {
+        unsafe {
+            let ptr = self.storage.write_held_ptr() as *const AtomicBool;
+            (*ptr).load(Ordering::Acquire)
+        }
+    }
+}
+
+impl <S:MemfdStorageTrait> Producer for MemfdRb<S> {
+    unsafe fn set_write_index(&self, value: usize) {
+        unsafe { (*self.storage.write_index_ptr()).store(value as u64, Ordering::Release); }
+    }
+}
+
+impl <S:MemfdStorageTrait> Consumer for MemfdRb<S> {
+    unsafe fn set_read_index(&self, value: usize) {
+        unsafe { (*self.storage.read_index_ptr()).store(value as u64, Ordering::Release); }
+    }
+}
+
+impl <S:MemfdStorageTrait> RingBuffer for MemfdRb<S> {
+    unsafe fn hold_read(&self, flag: bool) -> bool {
+        unsafe {
+            let ptr = self.storage.read_held_ptr() as *const AtomicBool;
+            (*ptr).swap(flag, Ordering::AcqRel)
+        }
+    }
+
+    unsafe fn hold_write(&self, flag: bool) -> bool {
+        unsafe {
+            let ptr = self.storage.write_held_ptr() as *const AtomicBool;
+            (*ptr).swap(flag, Ordering::AcqRel)
+        }
+    }
+}
+
+impl <S:MemfdStorageTrait> SplitRef for MemfdRb<S> {
+    type RefProd<'a> = Prod<&'a Self> where Self: 'a;
+    type RefCons<'a> = Cons<&'a Self> where Self: 'a;
+
+    fn split_ref(&mut self) -> (Self::RefProd<'_>, Self::RefCons<'_>) {
+        (Prod::new(self), Cons::new(self))
+    }
+}
+
+impl<S: MemfdStorageTrait> Drop for MemfdRb<S> {
+    fn drop(&mut self) {
+        unsafe {
+            self.hold_read(false);
+            self.hold_write(false);
+        }
+    }
+}
 
 
 #[cfg(test)]
