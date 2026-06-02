@@ -1,5 +1,6 @@
 use figment::{Figment, providers::Format};
 use serde::{Serialize, Deserialize};
+use crate::safeappdb::appsdb::Apps;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -11,6 +12,10 @@ pub struct Config {
     watchdog: Watchdog,
     #[serde(default)]
     recover: Recover,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    system_apps : Vec<Apps>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    apps: Vec<Apps>,
 }
 impl Config {
     fn default_config_version() -> u64 {
@@ -33,13 +38,13 @@ pub struct Global {
 impl Default for Global {
     fn default() -> Self {
         Self {
-            log_level: LogLevel::INFO,
+            log_level: LogLevel::Info,
             check_interval_ms: 500,
             state_file: "/tmp/safeappdb.state".to_string(),
             log_file: "/tmp/safeappdb.log".to_string(),
             config_file: "/tmp/safeappdb.config".to_string(),
             config_file_gen: "/tmp/safeappdb.config.gen".to_string(),
-            mode: Mode::DEVELOPMENT,
+            mode: Mode::Development,
             endpoint: "/tmp/saftyguard.sock".to_string(),
         }
     }
@@ -48,17 +53,17 @@ impl Default for Global {
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum LogLevel {
-    DEDUG,
-    INFO,
-    WARN,
-    ERROR,
+    Debug,
+    Info,
+    Warn,
+    Error,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum Mode {
-    DEVELOPMENT,
-    PRODUCTION,
+    Development,
+    Production,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -89,7 +94,7 @@ pub struct Recover {
 impl Default for Recover {
     fn default() -> Self {
         Self {
-            system_reset_on_failure: true,
+            system_reset_on_failure: false,
             max_global_failures: 5,
         }
     }
@@ -116,14 +121,14 @@ mod tests {
         let yml = r#"
 config_version: 1
 global:
-    log_level: info
-    check_interval_ms: 1000
-    state_file: /tmp/safeappdb.state
-    log_file: /tmp/safeappdb.log
-    config_file: /tmp/safeappdb.config
-    config_file_gen: /tmp/safeappdb.config.gen
-    mode: development # Can be development.
-    endpoint: /tmp/saftyguard.sock
+  log_level: info
+  check_interval_ms: 1000
+  state_file: /tmp/safeappdb.state
+  log_file: /tmp/safeappdb.log
+  config_file: /tmp/safeappdb.config
+  config_file_gen: /tmp/safeappdb.config.gen
+  mode: development # Can be development.
+  endpoint: /tmp/saftyguard.sock
 
 watchdog:
   device: /dev/watchdog2
@@ -135,6 +140,33 @@ recover:
   system_reset_on_failure: false
   max_global_failures: 6
 
+apps:
+  - name: app_a
+    max_retries: 3
+    critical: true
+    manager:
+      type: systemd
+      config:
+        unit-file: app_a
+    safemonitor:
+      - type: hearbeat
+        sub-type: main
+        config:
+           heartbeat_interval_ms: 1000
+    safeaction:
+      - type: systemd
+        config:
+          restart: true
+    safeinstrument:
+      - type: checkpoint
+        config:
+           checkpoint-A: 1
+           checkpoint-B: 2
+      - type: statemachine
+        config:
+           state-A: init
+           state-B: running
+           state-c: stopped
 "#;
 
         let mut fp = fs::File::create("/tmp/tst.yaml")?;
@@ -150,8 +182,8 @@ recover:
         assert_eq!(config.global.config_file, "/tmp/safeappdb.config");
         assert_eq!(config.global.config_file_gen, "/tmp/safeappdb.config.gen");
         assert_eq!(config.global.endpoint, "/tmp/saftyguard.sock");
-        assert_eq!(config.global.log_level, LogLevel::INFO);
-        assert_eq!(config.global.mode, Mode::DEVELOPMENT);
+        assert_eq!(config.global.log_level, LogLevel::Info);
+        assert_eq!(config.global.mode, Mode::Development);
 
         assert_eq!(config.recover.system_reset_on_failure, false);
         assert_eq!(config.recover.max_global_failures, 6);
@@ -168,6 +200,10 @@ recover:
     #[test]
     fn test_config_default() -> Result<(), Box<dyn std::error::Error>> {
         let yml = r#"
+apps:
+  - name: my_app
+    manager:
+      type: dummy
 "#;
 
         let mut fp = fs::File::create("/tmp/tst2.yaml")?;
@@ -183,16 +219,20 @@ recover:
         assert_eq!(config.global.config_file, "/tmp/safeappdb.config");
         assert_eq!(config.global.config_file_gen, "/tmp/safeappdb.config.gen");
         assert_eq!(config.global.endpoint, "/tmp/saftyguard.sock");
-        assert_eq!(config.global.log_level, LogLevel::INFO);
-        assert_eq!(config.global.mode, Mode::DEVELOPMENT);
+        assert_eq!(config.global.log_level, LogLevel::Info);
+        assert_eq!(config.global.mode, Mode::Development);
 
-        assert_eq!(config.recover.system_reset_on_failure, true);
+        assert_eq!(config.recover.system_reset_on_failure, false);
         assert_eq!(config.recover.max_global_failures, 5);
         
         assert_eq!(config.watchdog.device, "/dev/watchdog");
         assert_eq!(config.watchdog.timeout_sec, 10);
         assert_eq!(config.watchdog.pretimeout_sec, 5);
         assert_eq!(config.watchdog.kick_interval_ms, 3000);
+
+        assert_eq!(config.apps.len(), 1);
+        assert_eq!(config.apps[0].max_retries, -1);
+        assert_eq!(config.apps[0].critical, false);
 
         fs::remove_file("/tmp/tst2.yaml")?;
 

@@ -29,66 +29,53 @@ recover:
 
 system_apps:
   - name: systemd
-    timeout_ms: 5000
-    safemonitor:
-      -  heartbeat:
-         heartbeat_update_interval_ms: 500 # Interval it is expected update the heartbeat to safetyguard. It should be less then heartbeat Intervals of threads. Ideally half of the minimum heartbeat interval threads.
-         threads:
-         - main:
-           heartbeat_interval_ms: 1000
-    safeaction:
-     - coresystem:
-       restart: true
-       wait_time_ms: 1000
-       wait_for_reboot_accept: true # for example, safeapp sends this info or user accepts reboot
-     - safestate:
-       - app_name: safeapp
-         manager: systemd
-         systemd:
-          - service_name: safeapp # Runs this app, till system is safe.
-
-apps:
-  - name: app_a
-    timeout_ms: 3000
     max_retries: 3
     critical: true
-    manager: systemd
-    systemd:
-    - service_name: app_a # unit file name.
-    safeaction:
-      - systemd:
-        restart: true
-      - coresystem: # If not present, system will not rebooted.
-        restart: true #Upon all retries failure.
-      - safestate:
-        - app_name: safeapp
-          manager: systemd
-          systemd:
-          - service_name: safeapp # Runs this app, till system is safe.
+    manager:
+      type: native-sytemd
+      config:
     safemonitor:
-      -  heartbeat:
-         heartbeat_update_interval_ms: 300
-         threads:
-         - main:
+      - type: hearbeat
+        sub-type: main
+        config:
            heartbeat_interval_ms: 1000
-         - thread_b:
-           heartbeat_interval_ms: 500
-      -  memory:
-         max_mem: 10kb
+    safeaction:
+      - type: native-systemd
+        config:
+          restart: true
+apps:
+  - name: app_a
+    max_retries: 3
+    critical: true
+    manager:
+      type: systemd
+      config:
+        unit-file: app_a
+    safemonitor:
+      - type: hearbeat
+        sub-type: main
+        config:
+           heartbeat_interval_ms: 1000
+    safeaction:
+      - type: systemd
+        config:
+          restart: true
+    safeinstrument:
+      - type: checkpoint
+        config:
+           checkpoint-A: 1
+           checkpoint-B: 2
+      - type: statemachine
+        config:
+           state-A: init
+           state-B: running
+           state-c: stopped
 
   - name: app_b
     timeout_ms: 2000
     max_retries: 5
     critical: false
-    manager: docker # Can be another runtime
-    docker:
-    - container_name: app_b
-    safeaction:
-      -  container:
-         restart: true
-    safemonitor:
-      -  heartbeat:
-         threads:
-         - main:
-           heartbeat_interval_ms: 500
-
+    manager:
+      type: docker
+      config:
+        contianer-name: app_b
