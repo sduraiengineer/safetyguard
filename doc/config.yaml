@@ -15,7 +15,10 @@ global:
   init_file_gen: /var/lib/safetyguard/gen_config.yaml
   mode: production # Can be development. In case of development, the app configuration
                       # will be generated which can act as guidance, for example heartbeat_interval_ms as average heartbeat
-  endpoint: /tmp/safetyguard.sock
+  endpoint:
+    - type: socket_endpoint
+      config:
+        path: /tmp/safetyguard.sock
 
 watchdog:
   device: /dev/watchdog
@@ -33,7 +36,7 @@ system_apps:
     critical: true
     manager:
       type: native-sytemd
-      config:
+      config: {}
     safemonitor:
       - type: hearbeat
         sub-type: main

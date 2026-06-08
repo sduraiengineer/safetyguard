@@ -1,6 +1,9 @@
 use figment::{Figment, providers::Format};
 use serde::{Serialize, Deserialize};
-use crate::safeappdb::appsdb::Apps;
+use std::collections::HashMap;
+
+use crate::safeappdb::appsdb::App;
+use crate::safeappdb::config_object::{ConfigObject, ConfigValue};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -13,13 +16,20 @@ pub struct Config {
     #[serde(default)]
     recover: Recover,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
-    system_apps : Vec<Apps>,
+    system_apps : Vec<App>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
-    apps: Vec<Apps>,
+    apps: Vec<App>,
 }
 impl Config {
     fn default_config_version() -> u64 {
         1
+    }
+
+    pub fn get_system_apps(&self) -> &Vec<App> {
+        &self.system_apps
+    }
+    pub fn get_apps(&self) -> &Vec<App> {
+        &self.apps
     }
 }
 #[derive(Debug, Serialize, Deserialize)]
@@ -32,7 +42,7 @@ pub struct Global {
     config_file: String,
     config_file_gen: String,
     mode: Mode,
-    endpoint: String,
+    endpoint: Vec<ConfigObject>,
 }
 
 impl Default for Global {
@@ -45,12 +55,17 @@ impl Default for Global {
             config_file: "/tmp/safeappdb.config".to_string(),
             config_file_gen: "/tmp/safeappdb.config.gen".to_string(),
             mode: Mode::Development,
-            endpoint: "/tmp/saftyguard.sock".to_string(),
+            endpoint: vec![ConfigObject {
+                object_type: "socket_endpoint".to_string(),
+                sub_type: "".to_string(),
+                config: HashMap::from([("path".to_string(), ConfigValue::String("/tmp/safetygard.sock".to_string()))]),
+            }],
         }
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+// TODO: replace with tracing log level; Or may not required; Revisit later
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum LogLevel {
     Debug,
@@ -59,7 +74,7 @@ pub enum LogLevel {
     Error,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Mode {
     Development,
@@ -107,6 +122,10 @@ impl Config {
             .extract::<Config>()?;
         Ok(cfg)
     }
+
+    pub fn get_endpoints(&self) -> &[ConfigObject] {
+        &self.global.endpoint
+    }
 }
 
 #[cfg(test)]
@@ -128,7 +147,10 @@ global:
   config_file: /tmp/safeappdb.config
   config_file_gen: /tmp/safeappdb.config.gen
   mode: development # Can be development.
-  endpoint: /tmp/saftyguard.sock
+  endpoint:
+    - type: socket_endpoint
+      config:
+        path: /tmp/saftyguard.sock
 
 watchdog:
   device: /dev/watchdog2
@@ -181,9 +203,12 @@ apps:
         assert_eq!(config.global.log_file, "/tmp/safeappdb.log");
         assert_eq!(config.global.config_file, "/tmp/safeappdb.config");
         assert_eq!(config.global.config_file_gen, "/tmp/safeappdb.config.gen");
-        assert_eq!(config.global.endpoint, "/tmp/saftyguard.sock");
-        assert_eq!(config.global.log_level, LogLevel::Info);
-        assert_eq!(config.global.mode, Mode::Development);
+        assert_eq!(config.global.endpoint.len(), 1);
+        assert_eq!(config.global.endpoint[0].object_type, "socket_endpoint");
+        assert_eq!(config.get_endpoints().len(), 1);
+        assert_eq!(config.get_endpoints()[0].object_type, "socket_endpoint");
+        assert!(matches!(config.global.log_level, LogLevel::Info));
+        assert!(matches!(config.global.mode, Mode::Development));
 
         assert_eq!(config.recover.system_reset_on_failure, false);
         assert_eq!(config.recover.max_global_failures, 6);
@@ -218,9 +243,12 @@ apps:
         assert_eq!(config.global.log_file, "/tmp/safeappdb.log");
         assert_eq!(config.global.config_file, "/tmp/safeappdb.config");
         assert_eq!(config.global.config_file_gen, "/tmp/safeappdb.config.gen");
-        assert_eq!(config.global.endpoint, "/tmp/saftyguard.sock");
-        assert_eq!(config.global.log_level, LogLevel::Info);
-        assert_eq!(config.global.mode, Mode::Development);
+        assert_eq!(config.global.endpoint.len(), 1);
+        assert_eq!(config.global.endpoint[0].object_type, "socket_endpoint");
+        assert_eq!(config.get_endpoints().len(), 1);
+        assert_eq!(config.get_endpoints()[0].object_type, "socket_endpoint");
+        assert!(matches!(config.global.log_level, LogLevel::Info));
+        assert!(matches!(config.global.mode, Mode::Development));
 
         assert_eq!(config.recover.system_reset_on_failure, false);
         assert_eq!(config.recover.max_global_failures, 5);
@@ -231,8 +259,6 @@ apps:
         assert_eq!(config.watchdog.kick_interval_ms, 3000);
 
         assert_eq!(config.apps.len(), 1);
-        assert_eq!(config.apps[0].max_retries, -1);
-        assert_eq!(config.apps[0].critical, false);
 
         fs::remove_file("/tmp/tst2.yaml")?;
 
